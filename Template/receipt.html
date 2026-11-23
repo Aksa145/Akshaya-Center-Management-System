@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bill Receipt</title>
+    <style>
+        body { font-family: Arial; }
+        table { width:100%; border-collapse: collapse; }
+        th, td { border:1px solid #000; padding:6px; text-align:center; }
+    </style>
+</head>
+<body>
+
+<h2>Akshaya Center</h2>
+
+<p><b>Bill No:</b> {{ sale.id }}</p>
+<p><b>Staff:</b> {{ sale.staff.username }}</p>
+
+<table>
+<tr>
+    <th>Service</th>
+    <th>Qty</th>
+    <th>Rate</th>
+    <th>Total</th>
+</tr>
+
+{% for item in sale.items.all %}
+<tr>
+    <td>{{ item.product.name }}</td>
+    <td>{{ item.qty }}</td>
+    <td>{{ item.rate }}</td>
+    <td>{{ item.amount }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4">No items found</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<h3>Grand Total: ₹ {{ sale.total_amount }}</h3>
+
+<script>
+    window.print();
+</script>
+
+</body>
+</html>

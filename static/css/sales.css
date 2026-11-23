@@ -1,0 +1,56 @@
+body{
+    background:#f4f7fb;
+    font-family:Segoe UI;
+}
+
+.topbar{
+    background:#0d6efd;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-radius:10px;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+table th{
+    background:#212529 !important;
+    color:white;
+}
+
+.qty,.amount{
+    text-align:center;
+}
+
+/* .grand-box{
+    background:#198754;
+    color:white;
+    padding:20px;
+    margin-top:20px;
+    border-radius:15px;
+    text-align:center;
+} */
+ .grand-box{
+    background:#198754;
+    color:white;
+    padding:20px;
+    margin-top:20px;
+    border-radius:12px;
+}
+.table th{
+    background:#0d6efd !important;
+    color:white;
+}
+
+.card{
+    border-radius:12px;
+}
+.card{
+    border:none;
+    border-radius:12px;
+}

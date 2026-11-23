@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3>Edit Bill #{{ sale.id }}</h3>
+
+    <p>
+        <strong>Staff:</strong> {{ sale.staff.username }}<br>
+        <strong>Date:</strong> {{ sale.sale_date }}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Service</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+
+            <tbody id="billBody">
+                {% for item in sale.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+
+                    <td>
+                        <input type="number"
+                               class="form-control qty"
+                               name="qty_{{ item.id }}"
+                               value="{{ item.qty }}">
+                    </td>
+
+                    <td>
+                        <input type="number"
+                               class="form-control rate"
+                               name="rate_{{ item.id }}"
+                               value="{{ item.rate }}">
+                    </td>
+
+                    <td>
+                        ₹ <span class="amount">
+                            {{ item.amount|floatformat:2 }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No items found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h4 class="text-end">
+            Grand Total: ₹ <span id="grandTotal">
+                {{ sale.total_amount|floatformat:2 }}
+            </span>
+        </h4>
+
+        <div class="text-end mt-3">
+            <button class="btn btn-success">Update Bill</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+function recalc() {
+    let grand = 0;
+
+    document.querySelectorAll("#billBody tr").forEach(row => {
+        let qtyInput = row.querySelector(".qty");
+        let rateInput = row.querySelector(".rate");
+        let amountSpan = row.querySelector(".amount");
+
+        if (!qtyInput || !rateInput) return;
+
+        let qty = parseFloat(qtyInput.value || 0);
+        let rate = parseFloat(rateInput.value || 0);
+
+        let amount = qty * rate;
+        amountSpan.innerText = amount.toFixed(2);
+
+        grand += amount;
+    });
+
+    document.getElementById("grandTotal").innerText = grand.toFixed(2);
+}
+
+document.addEventListener("input", function (e) {
+    if (e.target.classList.contains("qty") ||
+        e.target.classList.contains("rate")) {
+        recalc();
+    }
+});
+</script>
+
+{% endblock %}
